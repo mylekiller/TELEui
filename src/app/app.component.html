@@ -1,10 +1,14 @@
 <mat-toolbar>
   <span>TE-LE</span>
 </mat-toolbar>
-<div>
+<div *ngIf="afAuth.user | async as user; else showLogin">
   <button mat-raised-button color="primary" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">Start Recording</button>
   <button mat-raised-button color="accent" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">Stop Recording</button>
   <button mat-raised-button color="warm" *ngIf="!isRecording && blobUrl" (click)="clearRecordedData()">Clear Recording</button>
+  <button mat-raised-button color="primary" *ngIf="!isRecording && blobUrl" (click)="uploadFile()">Upload File</button>
+  <button mat-raised-button color="warm" (click)="logout()">logout</button>
+  <div *ngIf="isUploading">Upload Percent is: {{uploadPercent | async}}%</div>
+  <div *ngIf="!isUploading && downloadURL != null"><a [href]="downloadURL | async">{{ downloadURL | async }}</a></div>
   <div *ngIf="isRecording && !blobUrl"> {{recordedTime}} </div>
   <div>
     <audio *ngIf="!isRecording && blobUrl"  controls>
@@ -12,3 +16,20 @@
     </audio>
   </div>
 </div>
+
+<ng-template #showLogin>
+  <div>
+    <mat-card>
+      <form>
+        <mat-form-field color="warn">
+          <input matInput type="email" placeholder="Email" [(ngModel)]="username" name="username">
+        </mat-form-field>
+
+        <mat-form-field color="warn">
+          <input matInput type="password" placeholder="Password" [(ngModel)]="password" name="password">
+        </mat-form-field>
+      </form>
+      <button mat-raised-button color="primary" (click)="login()" >Login</button>
+    </mat-card>
+  </div>
+</ng-template>

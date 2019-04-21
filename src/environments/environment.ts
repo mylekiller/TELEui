@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyADINa2G7hN0Cq4mDGclOTVJRghOPCWYsU',
+    authDomain: 'teleui.firebaseapp.com',
+    databaseURL: 'https://teleui.firebaseio.com',
+    projectId: 'teleui',
+    storageBucket: 'teleui.appspot.com',
+    messagingSenderId: '58407694023'
+  }
 };
 
 /*

@@ -1,7 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule, MatToolbarModule, MatFormFieldModule, MatDividerModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatToolbarModule, MatFormFieldModule, MatDividerModule, MatInputModule, MatCardModule} from '@angular/material';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
+import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -17,7 +23,14 @@ import { AppComponent } from './app.component';
     MatCheckboxModule,
     MatToolbarModule,
     MatFormFieldModule,
-    MatDividerModule
+    MatDividerModule,
+    MatInputModule,
+    MatCardModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

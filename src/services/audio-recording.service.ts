@@ -61,7 +61,9 @@ export class AudioRecordingService {
 
     this.recorder = new RecordRTC.StereoAudioRecorder(this.stream, {
       type: 'audio',
-      mimeType: 'audio/webm'
+      mimeType: 'audio/webm',
+      desiredSampRate: 8 * 1000,
+      numberOfAudioChannels: 1
     });
 
     this.recorder.record();
