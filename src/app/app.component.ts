@@ -36,7 +36,7 @@ export class AppComponent implements OnDestroy {
   modalRef;
 
   constructor(private audioRecordingService: AudioRecordingService, private sanitizer: DomSanitizer, private storage: AngularFireStorage,
-              private afAuth: AngularFireAuth, private afs: AngularFirestore, private modal: MatDialog) {
+              public afAuth: AngularFireAuth, private afs: AngularFirestore, private modal: MatDialog) {
 
     this.audioRecordingService.recordingFailed().subscribe(() => {
       this.isRecording = false;
