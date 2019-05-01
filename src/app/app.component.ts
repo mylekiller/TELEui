@@ -6,8 +6,10 @@ import {finalize} from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { auth } from 'firebase/app';
-import { Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import { Observable, from} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {ProgressDialogComponent} from './progress-dialog/progress-dialog.component';
 
 export interface Item { msgURL: string; name: string; }
 
@@ -31,9 +33,10 @@ export class AppComponent implements OnDestroy {
   item: Observable<Item>;
   name: string;
   documentid: string;
+  modalRef;
 
   constructor(private audioRecordingService: AudioRecordingService, private sanitizer: DomSanitizer, private storage: AngularFireStorage,
-              private afAuth: AngularFireAuth, private afs: AngularFirestore) {
+              private afAuth: AngularFireAuth, private afs: AngularFirestore, private modal: MatDialog) {
 
     this.audioRecordingService.recordingFailed().subscribe(() => {
       this.isRecording = false;
@@ -78,7 +81,10 @@ export class AppComponent implements OnDestroy {
   }
 
   uploadFile() {
-    const fileName = this.name != null ? `${this.name.split(' ').join('')}.mp3` : 'blankname.mp3';
+    if (this.documentid === null || this.documentid === undefined) {
+      return;
+    }
+    const fileName = this.name != null ? `${this.documentid}.mp3` : 'blankname.mp3';
     this.isUploading = true;
     const fileRef = this.storage.ref(fileName);
     const task = this.storage.upload(fileName, this.blobData);
@@ -87,10 +93,10 @@ export class AppComponent implements OnDestroy {
       finalize(() => {
           this.downloadURL = fileRef.getDownloadURL();
           this.isUploading = false;
-          this.updateDatabase();
         }
       )
     ).subscribe();
+    this.openModal();
   }
 
   login() {
@@ -99,12 +105,9 @@ export class AppComponent implements OnDestroy {
   logout() {
     this.afAuth.auth.signOut();
   }
-  updateDatabase() {
-    let item: Item;
-    const databaseDoc = this.afs.doc<Item>(`users/${this.documentid}`);
-    this.downloadURL.subscribe(url => {
-      item = {msgURL: url, name: this.name};
-      databaseDoc.update(item);
+  openModal() {
+    this.modalRef = this.modal.open(ProgressDialogComponent, {
+      data: {progress: this.uploadPercent, documentid: this.documentid, downloadURL: this.downloadURL, name: this.name.trim()}
     });
   }
 

@@ -10,16 +10,14 @@
       <div *ngIf="!isUploading">
         <form>
           <mat-form-field color="accent">
-            <input matInput type="string" placeholder="Recipent Name" [(ngModel)]="name" name="name">
+            <input matInput type="string" placeholder="Recipent Name" required minlength="3" [(ngModel)]="name" name="name">
           </mat-form-field>
 
           <mat-form-field color="accent">
-            <input matInput type="number" placeholder="User ID" [(ngModel)]="documentid" name="userid">
+            <input matInput type="number" placeholder="User ID" required [(ngModel)]="documentid" name="userid">
           </mat-form-field>
         </form>
       </div>
-      <div *ngIf="isUploading">Upload Percent is: {{uploadPercent | async}}%</div>
-      <div *ngIf="!isUploading && downloadURL != null"><a [href]="downloadURL | async">{{ downloadURL | async }}</a></div>
       <div *ngIf="isRecording && !blobUrl"> {{recordedTime}} </div>
       <div>
         <audio *ngIf="!isRecording && blobUrl"  controls>
@@ -30,7 +28,7 @@
     <mat-card-actions>
       <button mat-raised-button color="accent" *ngIf="!isRecording && !blobUrl" (click)="startRecording()">Start Recording</button>
       <button mat-raised-button color="accent" *ngIf="isRecording && !blobUrl" (click)="stopRecording()">Stop Recording</button>
-      <button mat-raised-button color="warm" *ngIf="!isRecording && blobUrl" (click)="clearRecordedData()">Clear Recording</button>
+      <button mat-raised-button color="warn" *ngIf="!isRecording && blobUrl" (click)="clearRecordedData()">Clear Recording</button>
       <button mat-raised-button color="primary" *ngIf="!isRecording && blobUrl" (click)="uploadFile()">Upload File</button>
       <button mat-raised-button color="primary" (click)="logout()">Logout</button>
     </mat-card-actions>

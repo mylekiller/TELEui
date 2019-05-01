@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Attempting Upload...</h1>
+<div>
+  <mat-grid-list cols="2" rowHeight="1:1">
+    <mat-grid-tile>
+      <mat-progress-bar mat-dialog-content mode="determinate" color="warn" value="{{data.progress | async}}"></mat-progress-bar>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div>
+        <button mat-dialog-actions mat-raised-button color="accent" (click)="close()">{{buttonMessage}}</button>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
