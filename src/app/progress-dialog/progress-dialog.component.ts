@@ -37,7 +37,7 @@ export class ProgressDialogComponent implements OnInit {
     let item: Item;
     const databaseDoc = this.afs.doc<Item>(`users/${this.data.documentid}`);
     fileRef.getDownloadURL().subscribe(url => {
-      item = {msgURL: url, name: this.data.name};
+      item = {msgURL: '/' + url.split('/').slice(3).join('/'), name: this.data.name};
       databaseDoc.set(item).then(() => {
         this.buttonMessage = 'Success!';
       }, () => {
